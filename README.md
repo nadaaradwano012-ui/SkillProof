@@ -1,476 +1,509 @@
-SkillProof
+# SkillProof
 
-Know your skills. Identify the gaps. Build your internship readiness.
+> **Know your skills. Identify the gaps. Build your internship readiness.**
 
-> Project status: In development / planned implementation  
-> Project type: Internship Skill Gap Matcher  
-> Learning context: Digital Egypt Pioneers Initiative (DEPI) student project
+SkillProof is a frontend-first internship skill gap matching web application developed by the **SkillProof Team** as part of the **DEPI React Front-End track**.
 
-SkillProof is a proposed web platform that helps students compare their current skills with the requirements of a specific internship. It identifies matched and missing skills, highlights areas that may need improvement, and turns the results into practical next steps.
+The platform helps university students organize their skills and supporting work, compare their skills with internship requirements, identify skill gaps, follow a learning roadmap, and track internship applications. It also provides restricted views for recruiters and company administrators to review applications and manage the hiring process.
 
-> Important: This README describes the intended project scope. Features, APIs, setup commands, and integrations should only be marked as complete after they have been implemented and tested in the repository.
+## Table of Contents
 
-Table of Contents
-
-- [Overview](#overview)
+- [Project Overview](#project-overview)
 - [Problem Statement](#problem-statement)
-- [Proposed Solution](#proposed-solution)
-- [Target Users](#target-users)
-- [Core Features](#core-features)
-- [How Skill Matching Works](#how-skill-matching-works)
-- [Readiness Score](#readiness-score)
-- [Proposed Technology Stack](#proposed-technology-stack)
-- [Proposed Architecture](#proposed-architecture)
-- [Project Structure](#project-structure)
-- [Getting Started](#getting-started)
-- [Configuration](#configuration)
-- [API Design](#api-design)
-- [Testing Strategy](#testing-strategy)
-- [Git and Contribution Workflow](#git-and-contribution-workflow)
-- [Privacy and Responsible Use](#privacy-and-responsible-use)
-- [Project Scope and Limitations](#project-scope-and-limitations)
-- [Team](#team)
+- [Project Objectives](#project-objectives)
+- [User Roles](#user-roles)
+- [Core User Journey](#core-user-journey)
+- [MVP Scope](#mvp-scope)
+- [Excluded from the First MVP](#excluded-from-the-first-mvp)
+- [Skill Matching Logic](#skill-matching-logic)
+- [Application and Roadmap Statuses](#application-and-roadmap-statuses)
+- [Confirmed Technology](#confirmed-technology)
+- [Current Project Status](#current-project-status)
+- [Team and Responsibilities](#team-and-responsibilities)
+- [Official Milestones](#official-milestones)
+- [Project Documentation](#project-documentation)
+- [Proposed Project Structure](#proposed-project-structure)
+- [Development Workflow](#development-workflow)
+- [Quality Rules](#quality-rules)
+- [Running the Project](#running-the-project)
+- [Known Limitations](#known-limitations)
+- [Instructor and Program](#instructor-and-program)
 - [License](#license)
 
-Overview
+## Project Overview
 
-Students can find it difficult to determine whether they meet the requirements of an internship and what they should learn next. SkillProof is designed to make this process more transparent by connecting a student's skills and supporting evidence to the requirements of a selected internship.
+SkillProof is a web-based platform that compares the skills listed in a student's profile with the required skills of an internship.
 
-The platform focuses on understandable results and practical improvement. Rather than showing only a percentage, it explains which required skills match, which are missing, and which may need further development or assessment.
+The system returns:
 
-Problem Statement
+- Matched required skills.
+- Missing required skills.
+- An explainable Skill Coverage score.
+- Learning roadmap actions based on identified gaps.
+- Application status information.
 
-Students may be interested in an internship but still have questions such as:
+SkillProof does not claim that a student has mastered a skill, guarantee internship acceptance, or make automatic hiring decisions.
 
-- Which of the internship's required skills do I already have?
-- Which skills are missing or need improvement?
-- What should I prioritize to improve my readiness?
-- How can I demonstrate my skills through projects, certificates, or assessments?
-- How can I keep track of internship applications and their statuses?
+## Problem Statement
 
- Proposed Solution
+Students may find it difficult to determine how well their current skills match an internship opportunity. Skills, projects, certificates, and supporting links may also be distributed across different places without a clear view of the student's readiness.
 
-SkillProof brings these activities into one workflow:
+Companies and recruiters need an organized view of relevant applicant information, but access must remain limited to appropriate data and actions.
 
-1. Create a student profile and list current skills.
-2. Add projects, certificates, or other supporting evidence.
-3. Enter an internship and review its required skills.
-4. Compare the student's skills with the internship requirements.
-5. Review matched skills, skill gaps, and an indicative readiness score.
-6. Follow a personalized roadmap with practical next steps.
-7. Track internship applications and review progress over time.
+SkillProof addresses this problem by providing a clear, rule-based skill comparison and a connected workflow for students, recruiters, and companies.
 
-Target Users
+## Project Objectives
 
-- **Students:** Manage their profiles and skills, analyze internship requirements, add evidence, assess skill gaps, follow a learning roadmap, and track applications.
-- **Recruiters:** Review relevant applicant skills, evidence, and matching summaries through a basic recruiter dashboard, subject to appropriate access controls.
+- Help students build and maintain an organized skill profile.
+- Compare student skills with internship-required skills using clear rules.
+- Identify matched and missing required skills.
+- Calculate a transparent Skill Coverage score.
+- Convert missing skills into manageable learning roadmap items.
+- Allow students to track internship applications.
+- Allow recruiters to review applications and update hiring stages.
+- Allow company administrators to manage internships and recruiters.
+- Deliver a readable and maintainable React frontend that the team can explain and extend.
 
- Core Features
+## User Roles
 
-The following describes the planned scope, not a claim that every feature is already implemented.
+### Student
 
- 1. Student Profile and Skills Management
+A student can:
 
-- Create and update a student profile.
-- Add, edit, and remove skills.
-- Record a self-reported proficiency level, such as Beginner, Intermediate, or Advanced.
+- Create and edit a profile.
+- Add, edit, search, and remove skills.
 - Add projects, certificates, and supporting links.
-- Associate evidence with relevant skills.
+- Browse internship opportunities.
+- View internship details and required skills.
+- Run the Skill Gap Matcher.
+- View matched and missing skills.
+- View the Skill Coverage calculation.
+- Add missing skills to a learning roadmap.
+- Update roadmap progress.
+- Add or submit internship applications.
+- Track application status.
 
- 2. Internship Requirements Input
+### Recruiter
 
-- Enter internship details and required skills manually.
-- Paste a job description and review the skills identified from it, if text extraction is implemented.
-- Optionally store a link to the original internship listing.
-- Allow students to review and edit the requirements before running an analysis.
+A recruiter can:
 
-Manual entry must remain available. A URL should not be assumed to be readable by the application, and text extraction must not be described as AI-powered unless a real AI integration exists.
+- View authorized company internships.
+- View applicants for permitted internships.
+- Review relevant candidate information.
+- View Skill Coverage as supporting information.
+- Review projects and supporting evidence shared with an application.
+- Add private internal notes.
+- Update application status.
 
- 3. Skill Matching Engine
+A recruiter cannot edit student profile data or use Skill Coverage as an automatic hiring decision.
 
-- Compare student skills against an internship's required skills.
-- Categorize requirements as **Matched**, **Missing**, **Needs Improvement**, or **Needs Assessment**, when the available information supports those categories.
-- Handle capitalization and unnecessary whitespace consistently.
-- Present the reasoning behind the matching results.
+### Company Admin
 
- 4. Skill Gap Analysis and Readiness Score
+A company administrator can:
 
-- Summarize the total number of required skills and the number of matched skills.
-- Display missing and underdeveloped skills separately.
-- Calculate an indicative readiness score.
-- Prioritize skill gaps using a documented and understandable rule.
+- Manage the company profile.
+- Create, edit, save, publish, and close internships.
+- Define required and preferred skills.
+- View company applicants and hiring stages.
+- Invite and manage recruiters.
+- Deactivate recruiters while preserving existing application history.
 
- 5. Skill Assessment and Verification
+## Core User Journey
 
-- Provide short quizzes or basic tasks for selected skills.
-- Store assessment results separately from self-reported proficiency.
-- Use assessment results in the analysis only according to explicit rules.
-- Distinguish evidence that has been submitted from evidence that has actually been reviewed.
+1. A student creates a profile.
+2. The student adds current skills, projects, certificates, and supporting links.
+3. A company creates an internship and defines its required skills.
+4. The student selects the internship and runs the Skill Gap Matcher.
+5. SkillProof normalizes and compares the skill lists.
+6. The system displays matched skills, missing skills, and Skill Coverage.
+7. The student adds relevant missing skills to the learning roadmap.
+8. The student applies for or logs an internship application.
+9. A recruiter reviews the application and updates its status.
+10. The company administrator monitors internships, recruiters, applicants, and hiring stages.
 
- 6. Personalized Learning Roadmap
+## MVP Scope
 
-- Generate next steps based on identified gaps.
-- Show the reason a skill was flagged and its priority.
-- Suggest practical learning activities or mini-projects where appropriate.
-- Let students track roadmap progress, for example Not Started, In Progress, and Completed.
-- Refresh recommendations when relevant profile or analysis data changes.
+The first MVP includes:
 
- 7. Projects, Certificates, and Evidence
+- Public landing page.
+- Student and company registration interfaces.
+- Recruiter invitation acceptance interface.
+- Frontend role-based sign-in flow.
+- Student, Recruiter, and Company Admin workspaces.
+- Student profile management.
+- Skills management with duplicate validation.
+- Projects, certificates, and supporting evidence.
+- Internship browsing and details.
+- Internship creation and management.
+- Required and preferred skill entry.
+- Skill matching with Matched and Missing results.
+- Explainable Skill Coverage calculation.
+- Learning roadmap and progress tracking.
+- Application tracking.
+- Recruiter applicant review.
+- Recruiter hiring pipeline.
+- Company recruiter management.
+- Loading, empty, validation, success, error, and confirmation states where relevant.
 
-- Add project descriptions and links, including GitHub repositories.
-- Add certificate information and supporting links.
-- Associate evidence with one or more skills.
-- Clearly display evidence status without claiming automatic verification where no verification process exists.
+## Excluded from the First MVP
 
- 8. Internship Application Tracking
+The following features are not part of the first MVP:
 
-- Save internships the student is interested in.
-- Track an application's status, date, notes, and source link when available.
-- Filter or review applications by status.
-- Keep application status separate from the skill readiness score.
+- Assessments or knowledge tests.
+- AI-based CV extraction.
+- AI-based job-description extraction.
+- Automatic evidence or code verification.
+- University SSO or transcript integration.
+- Candidate ranking.
+- Employer acceptance thresholds.
+- Automatic hiring or rejection decisions.
+- Advanced company analytics.
+- Direct messaging.
+- Production backend guarantees.
+- Production database guarantees.
+- Real authentication guarantees.
 
-Suggested statuses include Interested, Preparing, Applied, Interview, Accepted, Rejected, and Withdrawn.
+These features may only be considered later after the main workflow is complete and the team approves the required scope, prerequisites, and integration cost.
 
- 9. Basic Recruiter Dashboard
+## Skill Matching Logic
 
-- Review internship requirements and relevant applicant profiles.
-- View skills, matching summaries, assessment results when available, and supporting evidence.
-- Explain why skills were classified as matched or missing.
-- Restrict access to student information according to the application's agreed authorization rules.
+### Inputs
 
- Optional Enhancements
+- Student skills.
+- Internship-required skills.
 
-These are not required for the initial minimum viable product (MVP):
+### Process
 
-- AI-assisted CV skill extraction, with user review before saving.
-- Analysis of application feedback to suggest potential skill improvements.
-- AI-powered mock interviews.
+1. Validate the inputs.
+2. Remove surrounding whitespace from skill names.
+3. Compare skill names without case differences.
+4. Remove normalized duplicates.
+5. Search for every required skill in the student's skills.
+6. Classify each required skill as Matched or Missing.
+7. Calculate Skill Coverage when at least one required skill exists.
+8. Return the result independently from the React user interface.
 
-Optional AI functionality must not delay the core matching workflow. Any external AI integration should document its provider, configuration, privacy implications, and fallback behavior.
+### Formula
 
- How Skill Matching Works
+```text
+Skill Coverage = (Matched Required Skills / Total Required Skills) x 100
+```
 
-The matching engine is the core business-logic component of SkillProof. It should be implemented separately from the UI so it can be tested and reused.
+### Example
 
-At a high level, the engine should:
+```text
+Required Skills: HTML, CSS, JavaScript, React, Git
+Student Skills:  HTML, CSS, JavaScript, Git
 
-1. Validate the provided student skills and internship requirements.
-2. Normalize skill names for comparison, including capitalization and surrounding whitespace.
-3. Search for each required skill in the student's skill list.
-4. Apply the project's explicit classification rules.
-5. Return separate result groups for matched, missing, underdeveloped, and assessment-needed skills, where applicable.
-6. Calculate the readiness score and prioritize actionable gaps.
+Matched Skills:  HTML, CSS, JavaScript, Git
+Missing Skills:  React
 
-The initial algorithm can use arrays, objects, loops, conditions, searching, and functions. A straightforward nested-loop implementation is acceptable for the MVP and is easy to explain and test.
+Skill Coverage:  (4 / 5) x 100 = 80%
+```
 
- Example
+If no required skills are provided, the system returns no score instead of dividing by zero or displaying a misleading `0%`.
 
-**Internship requirements:** HTML, CSS, JavaScript, React, Git  
-**Student skills:** HTML, CSS, JavaScript, Git
+> Skill Coverage measures required-skill coverage only. It does not guarantee internship acceptance or prove skill mastery.
 
-Possible result:
+### Important Separation of Data
 
-- **Matched:** HTML, CSS, JavaScript, Git
-- **Missing:** React
-- **Needs Improvement:** Only skills for which the available information shows that a defined requirement is not met
-- **Needs Assessment:** Only skills for which further evaluation is genuinely needed
+The following information must remain separate:
 
-The example is illustrative. The application should calculate results from actual input rather than hardcoding them.
+- Skills listed by the student.
+- Self-reported proficiency.
+- Assessment results, if implemented in a future version.
+- Submitted evidence.
+- Reviewed evidence.
 
- Keep Skill Statuses Separate
+Projects, certificates, and supporting links do not automatically change the current Skill Coverage score.
 
-These are different questions and should not be combined into a single status:
+## Application and Roadmap Statuses
 
-- **Skill match:** Does the student's skill satisfy the internship requirement according to the configured rule?
-- **Proficiency:** What level has the student reported or demonstrated?
-- **Assessment:** Has the student completed an assessment, and what was its result?
-- **Evidence:** Has supporting evidence been added, and has it actually been reviewed?
+### Application Statuses
 
-A skill name appearing in the student's profile does not, by itself, prove competence or verify evidence.
+- Applied
+- Under Review
+- Interview
+- Accepted
+- Rejected
 
- Readiness Score
+A student should not create more than one active application for the same internship.
 
-For the initial MVP, the proposed score is:
+Closing an internship prevents new applications but does not delete existing applications or their history.
 
-`Readiness Score = (Matched Required Skills / Total Required Skills) × 100`
+### Roadmap Statuses
 
-For example, if four out of five required skills are matched, the score is 80%.
+- Not Started
+- In Progress
+- Completed
 
-Implementation requirements:
+Roadmap completion is calculated using completed items only:
 
-- Recalculate the score from current analysis data.
-- Handle an empty requirements list safely; do not divide by zero or show a misleading result.
-- Document what counts as a matched requirement.
-- Clearly label the score as an **indicative skill-coverage measure**, not a guarantee of being accepted or a complete measure of professional competence.
+```text
+Roadmap Completion = (Completed Items / Total Roadmap Items) x 100
+```
 
-If the team later chooses a weighted score, the weights and calculation must be documented and understandable.
+## Confirmed Technology
 
- Proposed Technology Stack
+- **Frontend:** React
+- **Programming Language:** JavaScript
+- **Styling:** CSS
+- **Version Control:** Git and GitHub
+- **Development Tool:** Visual Studio Code
 
-The exact implementation choices should be confirmed by the team and project supervisor before they are treated as final.
+The following decisions are not finalized:
 
-| Area | Proposed technology / approach |
-|---|---|
-| Frontend | React and TypeScript |
-| UI | HTML and CSS; responsive reusable components |
-| Backend | Node.js and Express |
-| Communication | REST API |
-| Data storage | Database technology to be selected and documented |
-| Version control | Git and GitHub |
-| Testing | Tests for matching logic, API behavior, and key user flows; tools to be confirmed |
-| AI features | Optional; external provider and configuration to be decided only if needed |
+- Routing library.
+- Shared state approach.
+- Backend and API implementation.
+- Database.
+- Real authentication and authorization.
+- Persistent storage.
+- Automated testing framework.
+- Deployment platform.
 
-Do not commit API keys, passwords, database credentials, or other secrets to the repository. Never expose private service keys in client-side code.
+The team will use the simplest suitable solution after the relevant concepts and current repository structure are reviewed.
 
- Proposed Architecture
+## Current Project Status
 
-The application is intended to separate interface, business logic, and data access:
+SkillProof is currently in the planning and requirements stage.
 
-- **Frontend:** Collects user input and presents profiles, analysis results, roadmaps, and application data.
-- **Backend:** Validates requests, applies business rules, and exposes API endpoints.
-- **Matching service:** Handles skill normalization, searching, classification, score calculation, and gap prioritization.
-- **Data layer:** Stores and retrieves profiles, skills, internships, evidence, assessments, analyses, and applications once the database decision is finalized.
+The first frontend version may use clearly labeled mock data and mock role access. Mock data must not be presented as permanent database storage, and frontend route hiding must not be described as real authorization.
 
-The matching logic should remain testable independently of React components or the database. Until a database is selected and configured, any mock or in-memory data should be clearly treated as temporary development data rather than permanent storage.
+The current repository may not yet contain the final React project structure, dependencies, or run scripts. This README must be updated as implementation decisions are confirmed.
 
- Project Structure
+## Team and Responsibilities
 
+### 1. Nada Adnan Radwan
+
+**Role:** Team Lead - Core Logic and Integration
+
+Responsibilities:
+
+- Project coordination.
+- GitHub workflow and pull-request coordination.
+- Shared frontend structure.
+- Mock role access and integration.
+- Shared data shapes and mock data coordination.
+- Matching contract and integration.
+- Repository integration and conflict coordination.
+- README and final documentation compilation.
+
+### 2. Reham Ali Ashour
+
+**Role:** Student Profile, Skills, and Evidence
+
+Responsibilities:
+
+- Student Profile.
+- Skills CRUD operations.
+- Duplicate-skill validation.
+- Projects and certificates.
+- Supporting evidence links.
+- Profile visibility settings.
+- Related forms, validation, and UI states.
+
+### 3. Alaa Ali Mohamed
+
+**Role:** Skill Matching and Analysis
+
+Responsibilities:
+
+- Skill Gap Matcher interface.
+- Matched and Missing analysis rules.
+- Skill Coverage explanation.
+- Matching edge cases.
+- Matching test cases.
+- Transfer of missing skills to the learning roadmap.
+
+### 4. Habiba Ehab Anwar
+
+**Role:** Learning Roadmap and Application Tracking
+
+Responsibilities:
+
+- Learning Roadmap.
+- Priority and progress states.
+- Custom roadmap items.
+- Application Tracker.
+- Student application details.
+- Basic interview information and related states.
+
+### 5. Sara Ahmed Mohamed
+
+**Role:** Company and Recruiter Experience
+
+Responsibilities:
+
+- Company Profile.
+- Internship management.
+- Required and preferred skill entry.
+- Recruiter Dashboard.
+- Applicant views.
+- Hiring pipeline.
+- Recruiter invitation and deactivation flows.
+
+### Shared Responsibilities
+
+All team members contribute to:
+
+- Responsive design.
+- Accessibility.
+- Loading, empty, validation, success, and error states.
+- Manual testing.
+- Pull-request review.
+- Integration support.
+- Documentation of owned features.
+- Final presentation preparation.
+
+## Official Milestones
+
+- **16 October 2026:** Planning, literature review, and requirements.
+- **6 November 2026:** System analysis and design.
+- **30 November 2026:** Implementation and working application.
+- **4 December 2026:** Final testing, reports, and presentation.
+
+Detailed internal work dates are proposed team targets and may be adjusted without changing the official milestones.
+
+## Project Documentation
+
+The planned repository documentation includes:
+
+```text
+docs/
+├── SkillProof_Project_Planning_and_Management.pdf
+└── SkillProof_Requirements_Gathering.pdf
+```
+
+The documents cover:
+
+- Project proposal and scope.
+- Project plan and proposed internal timeline.
+- Team responsibilities.
+- Risk assessment and mitigation.
+- Proposed KPIs.
+- Stakeholder analysis.
+- User stories.
+- Use cases.
+- Functional requirements.
+- Non-functional requirements.
+- Business rules.
+- Matching acceptance cases.
+
+## Proposed Project Structure
+
+The following structure is a proposal for the React implementation. It is not a claim about the repository's current contents.
+
+```text
 SkillProof/
-├── client/
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── layouts/
-│   │   ├── services/
-│   │   ├── hooks/
-│   │   ├── types/
-│   │   ├── utils/
-│   │   └── styles/
-│   └── package.json
-├── server/
-│   ├── src/
-│   │   ├── routes/
-│   │   ├── controllers/
-│   │   ├── services/
-│   │   ├── models/
-│   │   ├── middleware/
-│   │   └── utils/
-│   └── package.json
+├── public/
+├── src/
+│   ├── components/
+│   ├── pages/
+│   │   ├── public/
+│   │   ├── student/
+│   │   ├── recruiter/
+│   │   └── company/
+│   ├── data/
+│   ├── logic/
+│   ├── styles/
+│   ├── App.jsx
+│   └── main.jsx
 ├── docs/
-│   ├── requirements.md
-│   ├── architecture.md
-│   ├── data-model.md
-│   ├── api-documentation.md
-│   ├── testing-plan.md
-│   └── decisions.md
-├── .env.example
-├── .gitignore
-└── README.md
-
-## Getting Started
-
-> **Setup status:** The exact installation and run commands must be verified against the project's actual `package.json` scripts before this section is treated as final.
-
-### Prerequisites
-
-- Git
-- Node.js and npm
-- A code editor, such as Visual Studio Code
-- The selected database, if required by the implemented version
-
-Check your installation:
-
-```bash
-node --version
-npm --version
-git --version
+├── README.md
+└── package.json
 ```
 
-### Clone the Repository
+The structure must be updated after the React project is initialized and the team confirms the routing and shared-state approach.
 
-Replace `<REPOSITORY_URL>` with the repository's actual URL:
+## Development Workflow
 
-```bash
-git clone <REPOSITORY_URL>
-cd SkillProof
-```
+1. Create a focused feature branch.
+2. Implement one clear task.
+3. Verify the feature manually.
+4. Check the browser console for errors.
+5. Open a pull request with a clear description.
+6. Add screenshots for interface changes.
+7. Add practical verification steps.
+8. Request review for shared or integration-sensitive changes.
+9. Resolve conflicts with the affected feature owner.
+10. Merge only when the agreed core flow remains functional.
 
-### Install Dependencies
+Example branch names:
 
-After the frontend and backend applications have been created, install dependencies in each project folder:
-
-```bash
-cd client
-npm install
-```
-
-In a separate terminal:
-
-```bash
-cd server
-npm install
-```
-
-### Run the Application
-
-The following is a typical development setup, assuming the relevant `dev` scripts exist in each `package.json`:
-
-```bash
-# Terminal 1 — frontend
-cd client
-npm run dev
-```
-
-```bash
-# Terminal 2 — backend
-cd server
-npm run dev
-```
-
-Use the actual scripts and ports defined by the project. If these scripts have not been configured, add and test them before publishing final setup instructions.
-
-## Configuration
-
-Configuration depends on the final backend, database, and optional integrations. If environment variables are needed:
-
-1. Create a local `.env` file in the appropriate project directory.
-2. Add `.env` to `.gitignore`.
-3. Provide an `.env.example` containing variable names and safe placeholder values only.
-4. Document where each value is used and whether it is required.
-
-Possible examples, depending on the implementation:
-
-```dotenv
-PORT=5000
-DATABASE_URL=replace_with_local_database_connection
-AI_API_KEY=configure_only_if_an_ai_integration_is_enabled
-```
-
-These are illustrative names, not confirmed configuration requirements. Never use real credentials in documentation or commit them to GitHub.
-
-## API Design
-
-The backend is planned to expose REST endpoints. The examples below are **proposed routes**, not confirmed or implemented API contracts. Update this section as endpoints are built and tested.
-
-| Method | Example route | Purpose |
-|---|---|---|
-| `GET` | `/api/students/:id` | Retrieve a student profile |
-| `PUT` | `/api/students/:id` | Update a student profile |
-| `GET` | `/api/students/:id/skills` | Retrieve a student's skills |
-| `POST` | `/api/students/:id/skills` | Add a skill |
-| `PUT` | `/api/skills/:id` | Update a skill |
-| `DELETE` | `/api/skills/:id` | Remove a skill |
-| `POST` | `/api/internships` | Create an internship record |
-| `PUT` | `/api/internships/:id` | Update internship details |
-| `POST` | `/api/match` | Run a matching analysis |
-| `GET` | `/api/analyses/:id` | Retrieve a saved analysis |
-| `POST` | `/api/evidence` | Add supporting evidence |
-| `POST` | `/api/assessments` | Submit or create an assessment, depending on the final design |
-| `GET` | `/api/students/:id/roadmap` | Retrieve roadmap items |
-| `PUT` | `/api/roadmap/items/:id` | Update roadmap progress |
-| `GET` | `/api/applications` | Retrieve application records |
-| `POST` | `/api/applications` | Add an application record |
-| `PUT` | `/api/applications/:id` | Update an application record |
-
-For each implemented endpoint, document its method, purpose, input schema, example response, validation rules, possible errors, and access requirements. Do not describe planned endpoints as functional until they have been implemented and tested.
-
-## Testing Strategy
-
-Testing should cover the matching engine first, followed by the main API and user workflows.
-
-### Matching Logic
-
-Test at least the following cases:
-
-- All required skills are present.
-- Some or all required skills are missing.
-- The student has an empty skills list.
-- The internship has no required skills.
-- Skill names differ only in capitalization or surrounding whitespace.
-- Duplicate skill names are present.
-- A skill is listed but does not meet an explicitly defined proficiency requirement.
-- Evidence is absent or has not been reviewed.
-- The readiness score is recalculated when input changes.
-
-### Application Workflows
-
-Test profile updates, internship creation, analysis display, roadmap progress updates, evidence management, assessment results, and application status changes as these features are implemented.
-
-### API and UI
-
-Test valid and invalid requests, missing records, appropriate error responses, form validation, empty states, loading states, and responsive layouts. Run the tests and record the actual results; do not claim that tests passed unless they were run.
-
-## Git and Contribution Workflow
-
-GitHub is part of the development process. Use the repository to track code, tasks, reviews, and documentation.
-
-Recommended practices:
-
-1. Keep `main` stable and suitable for demonstration.
-2. Create a feature branch for a focused task, such as `feature/skill-matching`.
-3. Make small, meaningful commits.
-4. Open a Pull Request (PR) explaining what changed, why it changed, and how it was tested.
-5. Review a teammate's changes before merging when practical.
-6. Update documentation when behavior, setup, or API contracts change.
-
-Example workflow:
-
-```bash
-git switch main
-git pull origin main
-git switch -c feature/skill-matching
-```
-
-After implementation and testing:
-
-```bash
-git add .
-git commit -m "feat: implement skill matching"
-git push -u origin feature/skill-matching
+```text
+feature/student-profile
+feature/student-skills
+feature/skill-matcher
+feature/learning-roadmap
+feature/application-tracker
+feature/company-internships
+feature/recruiter-applicants
+fix/duplicate-skill-validation
 ```
 
 Example commit messages:
 
-- `feat: add student skill form`
-- `feat: calculate readiness score`
-- `fix: handle empty internship requirements`
-- `test: add matching logic test cases`
-- `docs: update API documentation`
+```text
+feat: add student skill form
+feat: calculate matched and missing skills
+fix: prevent duplicate normalized skill names
+style: improve mobile internship cards
+docs: update MVP scope in README
+```
 
-Never commit `.env` files, credentials, private tokens, or unnecessary generated files. Use a suitable `.gitignore` file.
+## Quality Rules
 
-## Privacy and Responsible Use
+- Do not hard-code displayed Skill Coverage results.
+- Do not divide by zero when required skills are empty.
+- Normalize skill casing and surrounding whitespace.
+- Do not count normalized duplicates more than once.
+- Keep matching logic independent from React UI components.
+- Keep evidence separate from the current score.
+- Do not automatically add a roadmap skill to the student's current skills.
+- Do not allow multiple active applications for the same student and internship.
+- Do not delete existing applications when an internship is closed.
+- Confirm destructive actions before completing them.
+- Include relevant loading, empty, validation, success, and error states.
+- Preserve entered form values after recoverable errors when possible.
+- Do not claim that tests pass unless they were actually run.
+- Do not describe mock data as permanent storage.
+- Do not describe frontend role views as secure authorization.
+- Keep documentation aligned with the real implementation and its limitations.
 
-SkillProof should handle student information and professional evidence carefully:
+## Running the Project
 
-- Collect only information needed by the platform.
-- Restrict access to private records according to the implemented authorization rules.
-- Do not expose credentials or private data in repository files, logs, or error messages.
-- Make clear when information is self-reported versus assessed or reviewed.
-- Do not mark evidence as verified without an actual review process.
-- Explain the readiness score and its limitations.
-- If an external AI service is introduced, document what data is sent and allow users to review AI-generated suggestions before saving them.
+The exact setup commands cannot be confirmed until the React project is initialized and `package.json` is available.
 
-Authentication, detailed role permissions, and the database choice require a confirmed implementation decision before production use.
+After setup is confirmed, this section should include the real commands used by the repository, for example:
 
-## Project Scope and Limitations
+```bash
+npm install
+npm run dev
+```
 
-- SkillProof is intended to support skill development and internship preparation; it cannot guarantee an interview, internship, or job offer.
-- The readiness score is an indicative measure of skill coverage, not a full measure of a person's ability.
-- Self-reported skills may not accurately reflect a student's proficiency.
-- Evidence is not automatically verified merely because a link or certificate is submitted.
-- Job description parsing, CV analysis, feedback analysis, and AI mock interviews are optional enhancements unless explicitly approved and implemented.
-- Database technology, authentication, deployment, and the final user-interface language remain decisions to be documented by the team.
-- A feature should be marked complete only after its behavior has been implemented and tested.
+The example commands above must not be treated as verified repository commands until they have been tested successfully with the actual project files.
 
-## Team
+## Known Limitations
 
-Add confirmed team details here:
+- Backend services are not confirmed.
+- Persistent database storage is not confirmed.
+- Real authentication is not confirmed.
+- Frontend role views do not provide real access control by themselves.
+- Mock data may be used during initial frontend development.
+- Assessments are excluded from the first MVP.
+- Evidence is not automatically verified.
+- Skill Coverage does not measure mastery or guarantee acceptance.
+- AI features are optional future enhancements and are not dependencies of the core workflow.
 
-- **Team name:** To be added
-- **Team members and roles:** To be added
-- **Supervisor or mentor:** To be added if required
+## Instructor and Program
+
+- **Program:** DEPI
+- **Track:** React Front-End
+- **Instructor:** Mohamed Amr
+- **Team:** SkillProof 
+- **Repository:** <https://github.com/nadaaradwano012-ui/SkillProof.git>
 
 ## License
 
-A license has not yet been selected. Add a license file and update this section once the team has agreed on the terms for sharing and reuse.
+No license has been confirmed yet.

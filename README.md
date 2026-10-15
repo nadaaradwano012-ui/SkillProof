@@ -1,4 +1,4 @@
-# SkillProof
+# SkillProof 
 
 > **Know your skills. Identify the gaps. Build your internship readiness.**
 
